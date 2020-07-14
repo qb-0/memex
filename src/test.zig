@@ -1,5 +1,5 @@
 const std = @import("std");
-const exmem = @import("../src/memEx.zig");
+const exmem = @import("memEx.zig");
 
 test "Process Test" {
     var proc: exmem.Process = undefined;
