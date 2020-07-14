@@ -1,14 +1,7 @@
 const std = @import("std");
 const exmem = @import("memEx.zig");
 
-test "Iterate" {
-    var i : usize = 0;
-    while (i <= 100): (i += 1) {
-        std.debug.print("{}\n", .{i});
-    }
-}
-
-test "Process Test" {
+test "Basics" {
     var proc: exmem.Process = undefined;
 
     proc.open("notepad.exe") catch |err| {
@@ -34,4 +27,18 @@ test "Process Test" {
     for (mod) |v| std.debug.print("{}, ", .{v});
 
     std.debug.print("\n", .{});
+}
+
+test "ReadNotepad" {
+    const CharOffset = 0x2C470;
+
+    var proc: exmem.Process = undefined;
+    proc.open("notepad.exe") catch |err| {
+        std.debug.print("\n{}\n", .{err});
+        std.process.exit(1);
+    };
+    defer proc.close();
+
+    const TextPtr = try proc.dmaAddr(proc.baseaddr + CharOffset, .{0x0});
+    return TextPtr;
 }

@@ -1,6 +1,5 @@
 const std = @import("std");
 const mem = std.mem;
-const assert = std.debug.assert;
 
 usingnamespace std.os.windows;
 usingnamespace @import("winapi.zig");
@@ -71,10 +70,16 @@ pub const Process = struct {
             return error.WriteFailed;
     }
 
+    pub fn dmaAddr(self: *Process, baseAddress: usize, offsets: var) !usize {
+        var res = try self.read(baseAddress, usize);
+        while (offsets) |o| res = self.read(res + o, usize);
+        return res;
+    }
+
     pub fn nopCode(self: *Process, address: usize, length: usize) !void {
         var i: usize = 0;
-        while (i < length): (i += 1)
-            self.write(address + (i - 1), @as(u8, 0x90));
+        while (i <= length): (i += 1)
+            self.write(address + (i - 1), u8(0x90));
     }
 
     pub fn close(self: *Process) void {
