@@ -60,14 +60,15 @@ pub const Process = struct {
         var buffer: [@sizeOf(T)]u8 = undefined;
         var numRead: usize = undefined;
 
-        if (ReadProcessMemory(self.handle, @intToPtr(LPCVOID, address), &buffer, @sizeOf(T), &numRead) != 1) {
+        if (ReadProcessMemory(self.handle, @intToPtr(LPCVOID, address), &buffer, @sizeOf(T), &numRead) != 1)
             return error.ReadFailed;
-        }
         return @bitCast(T, buffer);
     }
 
-    pub fn write(self: *Process, adress: usize, data: any) !void {
-        std.debug.print("{}\n", .{@TypeOf(data)});
+    pub fn write(self: *Process, address: usize, data: var) !void {
+        var tmp: usize = undefined;
+        if (WriteProcessMemory(self.handle, @intToPtr(LPCVOID, address), &data, @sizeOf(@TypeOf(data)), null) != 1)
+            return error.WriteFailed;
     }
 
     pub fn close(self: *Process) void {

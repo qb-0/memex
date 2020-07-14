@@ -33,7 +33,7 @@ pub extern "kernel32" fn WriteProcessMemory(
     lpBaseAddress: LPCVOID,
     lpBuffer: LPCVOID,
     nSize: SIZE_T,
-    lpNumberOfBytesRead: *SIZE_T
+    lpNumberOfBytesRead: ?*SIZE_T
 ) callconv(.Stdcall) BOOL;
 
 pub extern "kernel32" fn CreateToolhelp32Snapshot(
