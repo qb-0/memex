@@ -71,6 +71,12 @@ pub const Process = struct {
             return error.WriteFailed;
     }
 
+    pub fn nopCode(self: *Process, address: usize, length: usize) !void {
+        var i: usize = 0;
+        while (i < length): (i += 1)
+            self.write(address + (i - 1), @as(u8, 0x90));
+    }
+
     pub fn close(self: *Process) void {
         CloseHandle(self.handle);
     }

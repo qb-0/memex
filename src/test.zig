@@ -1,6 +1,13 @@
 const std = @import("std");
 const exmem = @import("memEx.zig");
 
+test "Iterate" {
+    var i : usize = 0;
+    while (i <= 100): (i += 1) {
+        std.debug.print("{}\n", .{i});
+    }
+}
+
 test "Process Test" {
     var proc: exmem.Process = undefined;
 
